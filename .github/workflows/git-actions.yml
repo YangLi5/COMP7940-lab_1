@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - main
+
+env:
+  DEP_PATH: requirements.txt
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,3 +19,9 @@ jobs:
           HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
           HEROKU_APP_NAME: "comp7940perry"  # Rename this to the app of your Heroku app.
         run: git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
+
+      - name: Check out master
+        uses: actions/checkout@master
+
+      - name: Security vulnerabilities scan
+        uses: aufdenpunkt/python-safety-check@master
